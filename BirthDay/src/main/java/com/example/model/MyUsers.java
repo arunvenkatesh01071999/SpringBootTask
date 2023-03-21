@@ -2,13 +2,19 @@ package com.example.model;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
+
 public class MyUsers {
 			
-	private int id;
+	private Integer id;
+	
+	@Size(min=2,message="Name should have 2 character") 
 	private String name;
+	@Past(message="Birthdate sholud be past date only")
 	private LocalDate birthday;
 	
-	public MyUsers(int id, String name, LocalDate birthday) {
+	public MyUsers(Integer id, String name, LocalDate birthday) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -20,11 +26,11 @@ public class MyUsers {
 		return "MyUsers [id=" + id + ", name=" + name + ", birthday=" + birthday + "]";
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

@@ -3,6 +3,7 @@ package com.example.service;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.springframework.stereotype.Component;
 
@@ -12,23 +13,40 @@ import com.example.model.MyUsers;
 public class UserDaoService {
 	
 	
-	private static List<MyUsers> users = new LinkedList<>();
-	
+	private static List<MyUsers> myList = new LinkedList<>();
+	private static int count=0;
 	static {
-		users.add(new MyUsers(1,"Adam",LocalDate.now().minusYears(30)));
-		users.add(new MyUsers(2,"Eve",LocalDate.now().minusYears(25)));
-		users.add(new MyUsers(3,"Jim",LocalDate.now().minusYears(20)));
+		myList.add(new MyUsers(++count,"Adam",LocalDate.now().minusYears(30)));
+		myList.add(new MyUsers(++count,"Eve",LocalDate.now().minusYears(25)));
+		myList.add(new MyUsers(++count,"Jim",LocalDate.now().minusYears(20)));
 	}
 	
 	public List<MyUsers> findAll() {
-		return users;
+		return myList;
 	}
 	
-	//public User save(User user) {
-
-	/*public MyUsers findOne(int id) {
+	
+	public MyUsers findOne(int id)
+	{
 		Predicate<? super MyUsers> predicate = user -> user.getId().equals(id); 
-		return users.stream().filter(predicate).findFirst().get();
-	}*/
+		return myList.stream().filter(predicate).findFirst().orElse(null);
+	}
+	
+	public void deletebyUser(int id)
+	{
+		Predicate<? super MyUsers> predicate = user -> user.getId().equals(id); 
+		myList.removeIf(predicate);
+	}
+	
+	
+	
 
+	public MyUsers save(MyUsers myusers)
+	{
+		myusers.setId(++count);
+		
+		myList.add(myusers);
+		
+		return myusers;
+	}
 }
