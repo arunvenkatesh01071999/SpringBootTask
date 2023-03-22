@@ -1,8 +1,11 @@
 package com.example.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +35,7 @@ public class MyController {
 	}
 	
 	@GetMapping("/getUsers/{id}")
-	public MyUsers retrieveUser(@PathVariable int id)
+	public EntityModel<MyUsers> retrieveUser(@PathVariable int id)
 	{
 		MyUsers myusers= service.findOne(id);
 		
@@ -40,8 +43,14 @@ public class MyController {
 		{
 			throw new UserNotFoundException("id: "+id);
 		}
+		EntityModel<MyUsers> entityModel = EntityModel.of(myusers);
 		
-		return myusers;
+		WebMvcLinkBuilder link =  linkTo(methodOn(this.getClass()).findAllUser());
+		entityModel.add(link.withRel("all-users"));
+		
+		return entityModel;
+		
+		
 	}
 	
 	@DeleteMapping("/getUsers/{id}")

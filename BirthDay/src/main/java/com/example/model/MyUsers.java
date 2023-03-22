@@ -2,16 +2,22 @@ package com.example.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
+
 public class MyUsers {
-			
+		  
+	
 	private Integer id;
 	
-	@Size(min=2,message="Name should have 2 character") 
+	@Size(min=2,message="Name should have 2 character")
+	@JsonProperty("user_name") 
 	private String name;
 	@Past(message="Birthdate sholud be past date only")
+	@JsonProperty("user_birthdate") 
 	private LocalDate birthday;
 	
 	public MyUsers(Integer id, String name, LocalDate birthday) {
